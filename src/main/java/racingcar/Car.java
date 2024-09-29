@@ -4,7 +4,6 @@ import camp.nextstep.edu.missionutils.Randoms;
 
 public class Car {
     private final String name;
-    private int randomNumber;
     private int position;
 
     public Car(String name) {

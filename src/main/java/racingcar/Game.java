@@ -26,25 +26,23 @@ public class Game {
             car.advance();
             car.graphicPosition();
         }
-        System.out.println("");
+        System.out.println();
     }
 
     public List<Car> gameWinner(List<Car> carList) {
-        List<Car> winnerList = new ArrayList<>();
-        int winnerPosition = Collections.max(carList, Comparator.comparingInt(Car::getPosition)).getPosition();
-        for (Car car : carList) {
-            if (car.getPosition() == winnerPosition) {
-                winnerList.add(car);
-            }
-        }
-        return winnerList;
+        int maxPosition = carList.stream()
+                .mapToInt(Car::getPosition)
+                .max()
+                .orElse(0);
+
+        return carList.stream()
+                .filter(car -> car.getPosition() == maxPosition)
+                .toList();
     }
 
     public void gameEnd() {
         List<Car> winnerList = gameWinner(carList);
-        List<String> winner = winnerList.stream().map(Car::getName).collect(Collectors.toList());
-
-        String result = String.join(", ", winner);
-        System.out.println("최종 우승자 : " + result);
+        List<String> winner = winnerList.stream().map(Car::getName).toList();
+        System.out.println("최종 우승자 : " + String.join(", ", winner));
     }
 }
