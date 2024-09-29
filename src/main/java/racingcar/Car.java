@@ -5,18 +5,19 @@ import camp.nextstep.edu.missionutils.Randoms;
 public class Car {
     private final String name;
     private int position;
+    private RandomNumberGenerator randomNumberGenerator;
 
-    public Car(String name) {
+    public Car(String name,RandomNumberGenerator randomNumberGenerator) {
+        if (name.length() > 5) {
+            throw new IllegalStateException("이름은 5자 이하만 가능합니다.");
+        }
         this.name = name;
         this.position = 0;
-    }
-
-    public int generateRandomNumber() {
-         return Randoms.pickNumberInRange(0, 9);
+        this.randomNumberGenerator = randomNumberGenerator;
     }
 
     public void advance() {
-        int randomNumber = generateRandomNumber();
+        int randomNumber = randomNumberGenerator.generate();
         if (randomNumber >= 4) {
             position++;
         }

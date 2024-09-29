@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 public class Game {
     int tryCount = 0;
     List<Car> carList = new ArrayList<>();
+    RandomNumberGenerator randomNumberGenerator = new RandomNumberGenerator();
 
 
     public void gameStart() {
@@ -15,7 +16,7 @@ public class Game {
         String carInput = Console.readLine();
         List<String> carString = Arrays.asList(carInput.split(","));
         for (String name : carString) {
-            carList.add(new Car(name.trim()));
+            carList.add(new Car(name.trim(), randomNumberGenerator));
         }
         System.out.println("시도할 횟수는 몇번인가요?");
         tryCount = Integer.parseInt(Console.readLine());
@@ -33,16 +34,19 @@ public class Game {
         int maxPosition = carList.stream()
                 .mapToInt(Car::getPosition)
                 .max()
-                .orElse(0);
+                .orElseThrow(() -> new IllegalArgumentException("자동차가 없습니다."));
 
         return carList.stream()
                 .filter(car -> car.getPosition() == maxPosition)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public void gameEnd() {
         List<Car> winnerList = gameWinner(carList);
-        List<String> winner = winnerList.stream().map(Car::getName).toList();
-        System.out.println("최종 우승자 : " + String.join(", ", winner));
+        // 리스트를 콤마로 구분된 문자열로 변환하여 출력
+        String winners = winnerList.stream()
+                .map(Car::getName)
+                .collect(Collectors.joining(", "));
+        System.out.println("최종 우승자 : " + winners);
     }
 }
