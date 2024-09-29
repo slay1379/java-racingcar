@@ -2,9 +2,8 @@ package racingcar;
 
 import camp.nextstep.edu.missionutils.Console;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Game {
     int tryCount = 0;
@@ -22,5 +21,30 @@ public class Game {
         tryCount = Integer.parseInt(Console.readLine());
     }
 
+    public void gameProgress(List<Car> carList) {
+        for (Car car : carList) {
+            car.advance();
+            car.graphicPosition();
+        }
+        System.out.println("");
+    }
 
+    public List<Car> gameWinner(List<Car> carList) {
+        List<Car> winnerList = new ArrayList<>();
+        int winnerPosition = Collections.max(carList, Comparator.comparingInt(Car::getPosition)).getPosition();
+        for (Car car : carList) {
+            if (car.getPosition() == winnerPosition) {
+                winnerList.add(car);
+            }
+        }
+        return winnerList;
+    }
+
+    public void gameEnd() {
+        List<Car> winnerList = gameWinner(carList);
+        List<String> winner = winnerList.stream().map(Car::getName).collect(Collectors.toList());
+
+        String result = String.join(", ", winner);
+        System.out.println("최종 우승자 : " + result);
+    }
 }

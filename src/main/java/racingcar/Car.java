@@ -27,4 +27,12 @@ public class Car {
         System.out.println(name + " : " + "-".repeat(position));
     }
 
+    public int getPosition() {
+        return this.position;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
 }
